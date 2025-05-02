@@ -37,7 +37,8 @@ dependencies {
     kapt("io.micronaut:micronaut-http-validation")
     kapt("io.micronaut.security:micronaut-security-annotations")
     kapt("io.micronaut.serde:micronaut-serde-processor")
-    kapt("com.querydsl:querydsl-apt:5.0.0:jakarta")
+    kapt("com.querydsl:querydsl-apt:5.1.0:jakarta")
+    kapt("io.micronaut.openapi:micronaut-openapi")
 
     implementation("io.micronaut.beanvalidation:micronaut-hibernate-validator")
     implementation("io.micronaut.validation:micronaut-validation")
@@ -46,32 +47,14 @@ dependencies {
     implementation("io.micronaut.security:micronaut-security-jwt")
     implementation("io.micronaut.serde:micronaut-serde-jackson")
     implementation("io.micronaut.sql:micronaut-jdbc-hikari")
+    implementation("io.micronaut.openapi:micronaut-openapi-annotations")
 
     implementation("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}")
 
+    implementation("org.yaml:snakeyaml")
     implementation("com.github.f4b6a3:ulid-creator:5.2.3")
-
-//    implementation("org.hibernate.orm:hibernate-jpamodelgen")
-
-//    implementation("com.github.ryarnyah:micronaut-querydsl:3.0.0")
-//    implementation("com.snourian.micronaut:querydsl-dynamic-query:0.2.0")
-
-
-//    implementation("com.querydsl:querydsl-jpa:5.1.0:jakarta")
-//    implementation("com.querydsl:querydsl-sql:5.1.0")
-//    annotationProcessor("com.querydsl:querydsl-apt:5.1.0:jakarta")
-
-
-    kapt("com.querydsl:querydsl-apt:5.1.0:jakarta")
-
-
-
     implementation("com.querydsl:querydsl-jpa:5.1.0:jakarta")
-//    kapt("com.querydsl:querydsl-apt:5.1.0:jakarta")
-//    kapt("jakarta.annotation:jakarta.annotation-api")
-//    kapt("jakarta.persistence:jakarta.persistence-api")
-
     implementation("com.linecorp.kotlin-jdsl:jpql-dsl:${jdslVersion}")
     implementation("com.linecorp.kotlin-jdsl:jpql-render:${jdslVersion}")
     implementation("com.linecorp.kotlin-jdsl:hibernate-support:${jdslVersion}")

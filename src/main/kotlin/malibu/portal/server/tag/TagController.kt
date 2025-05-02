@@ -6,11 +6,13 @@ import io.micronaut.http.annotation.Body
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.Post
+import io.micronaut.validation.Validated
 import jakarta.validation.Valid
 import malibu.portal.operate.dto.tag.TagCreateSpec
 import malibu.portal.operate.dto.tag.TagDto
 import malibu.portal.operate.dto.tag.TagSearchSpec
 
+@Validated
 @Controller("/tags")
 open class TagController(
     private val tagService: TagService

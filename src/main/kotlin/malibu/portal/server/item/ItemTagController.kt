@@ -6,12 +6,14 @@ import io.micronaut.http.annotation.Body
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.Post
+import io.micronaut.validation.Validated
 import jakarta.validation.Valid
 import malibu.portal.operate.dto.item.ItemTagCreateSpec
 import malibu.portal.operate.dto.item.ItemTagDto
 import malibu.portal.operate.dto.item.ItemTagSearchSpec
 import java.util.UUID
 
+@Validated
 @Controller("/items/{itemId}/tags")
 class ItemTagController(
     private val itemTagService: ItemTagService,

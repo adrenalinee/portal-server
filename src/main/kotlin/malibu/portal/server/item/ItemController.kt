@@ -8,6 +8,7 @@ import io.micronaut.http.annotation.Delete
 import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.Patch
 import io.micronaut.http.annotation.Post
+import io.micronaut.security.authentication.Authentication
 import io.micronaut.validation.Validated
 import jakarta.validation.Valid
 import malibu.portal.operate.dto.item.ItemCreateSpec
@@ -24,8 +25,13 @@ class ItemController(
 ) {
     @Post
     fun create(
+        authentication: Authentication,
         @Valid @Body createSpec: ItemCreateSpec
     ): ItemDto {
+        println(authentication.name)
+        authentication.attributes.forEach { println(it) }
+        println("---")
+        authentication.roles.forEach { println(it) }
         return itemService.create(createSpec)
     }
 
