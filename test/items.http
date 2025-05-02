@@ -1,0 +1,47 @@
+POST http://localhost:8080/items
+Content-Type: application/json
+
+{
+  "name": "google",
+  "description": "구글입니다.",
+  "links": [
+    {
+      "name": "google gemini",
+      "url": "https://google.com",
+      "description": "구글 홈페이지 입니다."
+    },
+    {
+      "name": "google gemini",
+      "url": "https://gemini.google.com/",
+      "description": "구글 제미니입니다."
+    }
+  ]
+}
+
+###
+POST http://localhost:8080/items
+Content-Type: application/json
+
+{
+    "name": "naver",
+    "url": "https://naver.com",
+    "description": "네이버입니다."
+}
+
+###
+GET http://localhost:8080/items
+
+###
+GET http://localhost:8080/items/{{itemId}}
+
+###
+PATCH http://localhost:8080/items/{{itemId}}
+Content-Type: application/json
+
+{
+  "description": "설명수정..1"
+}
+
+
+###
+DELETE http://localhost:8080/items/{{itemId}}

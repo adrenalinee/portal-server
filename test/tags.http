@@ -1,0 +1,10 @@
+POST http://localhost:8080/tags
+Content-Type: application/json
+
+{
+  "name": "미국",
+  "description": "미국입니다."
+}
+
+###
+GET http://localhost:8080/tags

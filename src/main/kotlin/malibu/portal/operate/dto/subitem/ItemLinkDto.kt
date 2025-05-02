@@ -5,7 +5,7 @@ import io.micronaut.serde.annotation.Serdeable
 
 @Serdeable
 @Introspected
-data class SubItemDto(
+data class ItemLinkDto(
     val name: String,
     val url: String,
     val description: String? = null,

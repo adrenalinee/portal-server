@@ -1,12 +1,10 @@
 package malibu.portal.entity
 
 import io.micronaut.serde.annotation.Serdeable
-import jakarta.persistence.CascadeType
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.OneToMany
+import jakarta.persistence.*
 import malibu.portal.operate.dto.item.ItemCreateSpec
 import malibu.portal.operate.dto.item.ItemDto
+import malibu.portal.operate.dto.item.ItemDtoSimple
 import malibu.portal.operate.dto.item.ItemUpdateSpec
 
 @Entity
@@ -14,26 +12,8 @@ import malibu.portal.operate.dto.item.ItemUpdateSpec
 class Item(
     organizationId: String,
     name: String,
-    url: String,
     description: String? = null,
 ): BaseEntity() {
-
-    companion object {
-        fun create(organizationId: String, createSpec: ItemCreateSpec): Item {
-            return Item(
-                organizationId = organizationId,
-                name = createSpec.name,
-                url = createSpec.url,
-                description = createSpec.description,
-            ).also { item ->
-                item.mutableChildren.addAll(
-                    createSpec.children?.map { subItemCreateSpec ->
-                        SubItem.create(item, subItemCreateSpec)
-                    } ?: listOf()
-                )
-            }
-        }
-    }
 
     var organizationId: String = organizationId
         protected set
@@ -42,32 +22,42 @@ class Item(
     var name: String = name
         protected set
 
-    @Column(nullable = false)
-    var url: String = url
-        protected set
-
     @OneToMany(mappedBy = "parent", cascade = [CascadeType.ALL])
-    val mutableChildren: MutableList<SubItem> = mutableListOf()
-    val children: List<SubItem>
-        get() = mutableChildren.toList()
+    protected val mutableLinks: MutableList<ItemLink> = mutableListOf()
+    val links: List<ItemLink>
+        get() = mutableLinks.toList()
 
-    @OneToMany(mappedBy = "item")
-    val mutableTags: MutableSet<ItemTag> = mutableSetOf()
+    @OneToMany(mappedBy = "item", cascade = [CascadeType.ALL])
+    protected val mutableTags: MutableSet<ItemTag> = mutableSetOf()
     val tags: Set<ItemTag>
         get() = mutableTags.toSet()
 
     var description: String? = description
         protected set
 
+    companion object {
+        fun create(organizationId: String, createSpec: ItemCreateSpec): Item {
+            return Item(
+                organizationId = organizationId,
+                name = createSpec.name,
+                description = createSpec.description,
+            ).also { item ->
+                item.mutableLinks.addAll(
+                    createSpec.links?.map { subItemCreateSpec ->
+                        ItemLink.create(item, subItemCreateSpec)
+                    } ?: listOf()
+                )
+            }
+        }
+    }
 
-    fun patch(updateSpec: ItemUpdateSpec) {
+    fun update(updateSpec: ItemUpdateSpec) {
         updateSpec.name?.also { name = it }
-        updateSpec.url?.also { url = it }
         updateSpec.description?.also { description = it }
-        updateSpec.children?.also {
-            mutableChildren.clear()
-            mutableChildren.addAll(it.map { children ->
-                SubItem.create(this, children)
+        updateSpec.links?.also {
+            mutableLinks.clear()
+            mutableLinks.addAll(it.map { children ->
+                ItemLink.create(this, children)
             })
         }
     }
@@ -77,12 +67,22 @@ class Item(
             linkItemId = getId(),
             organizationId = organizationId,
             name = name,
-            url = url,
             description = description,
-            children = children.map { subItem -> subItem.toDto() },
-            tags = tags.map { linkTag -> linkTag.toDto() },
-//            children = emptyList(),
-//            tags = emptyList(),
+            links = links.map { subItem -> subItem.toDto() },
+//            tags = tags.map { linkTag -> linkTag.toDto() },
+            version = version,
+            createdAt = createdAt,
+            updatedAt = updatedAt,
+        )
+    }
+
+    fun toDtoSimple(): ItemDtoSimple {
+        return ItemDtoSimple(
+            linkItemId = getId(),
+            organizationId = organizationId,
+            name = name,
+            description = description,
+            links = links.map { subItem -> subItem.toDto() },
             version = version,
             createdAt = createdAt,
             updatedAt = updatedAt,

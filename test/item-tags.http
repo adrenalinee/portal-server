@@ -1,0 +1,9 @@
+POST http://localhost:8080/items/{{itemId}}/tags
+Content-Type: application/json
+
+{
+  "tagId": "{{tagId}}"
+}
+
+###
+GET http://localhost:8080/items/{{itemId}}/tags

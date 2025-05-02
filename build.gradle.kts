@@ -1,4 +1,5 @@
 plugins {
+//    java
     id("org.jetbrains.kotlin.jvm") version "2.1.0"
     id("org.jetbrains.kotlin.plugin.allopen") version "2.1.0"
     id("org.jetbrains.kotlin.plugin.jpa") version "2.1.0"
@@ -7,6 +8,7 @@ plugins {
     id("com.gradleup.shadow") version "8.3.6"
     id("io.micronaut.aot") version "4.5.3"
     kotlin("kapt") version "2.1.0"
+    idea
 }
 
 version = "0.1"
@@ -23,9 +25,14 @@ allOpen {
     annotation("jakarta.persistence.Entity")
     annotation("jakarta.persistence.MappedSuperclass")
     annotation("jakarta.persistence.Embeddable")
+    annotation("jakarta.inject.Singleton")
+    annotation("io.micronaut.http.annotation.Controller")
 }
 
 dependencies {
+//    annotationProcessor("org.hibernate.orm:hibernate-jpamodelgen")
+//    kapt("org.hibernate.orm:hibernate-jpamodelgen")
+
     kapt("io.micronaut.data:micronaut-data-processor")
     kapt("io.micronaut:micronaut-http-validation")
     kapt("io.micronaut.security:micronaut-security-annotations")

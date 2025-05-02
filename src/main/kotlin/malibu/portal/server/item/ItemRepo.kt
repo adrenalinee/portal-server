@@ -1,4 +1,4 @@
-package malibu.portal
+package malibu.portal.server.item
 
 //import io.micronaut.data.runtime.criteria.where
 import com.querydsl.jpa.impl.JPAQuery
@@ -9,8 +9,8 @@ import io.micronaut.data.model.Pageable
 import jakarta.persistence.EntityManager
 import malibu.portal.entity.Item
 import malibu.portal.entity.QItem
+import malibu.portal.entity.QItemLink
 import malibu.portal.entity.QItemTag
-import malibu.portal.entity.QSubItem
 import malibu.portal.operate.dto.item.ItemSearchSpec
 import java.util.*
 
@@ -20,21 +20,26 @@ abstract class ItemRepo(
 ): JpaRepository<Item, UUID>
 {
     private val qItem = QItem.item
-    private val qSubItem = QSubItem.subItem
+    private val qItemLink = QItemLink.itemLink
     private val qItemTag = QItemTag.itemTag
 
-    fun search2(searchSpec: ItemSearchSpec, pageable: Pageable): Page<Item> {
+    /**
+     * HHH90003004 에러 관련 참고: https://twosky.tistory.com/60
+     */
+    fun search(searchSpec: ItemSearchSpec, pageable: Pageable): Page<Item> {
         val query = JPAQuery<Item>(entityManater)
             .from(qItem)
+            .leftJoin(qItem.mutableLinks, qItemLink)
+            .leftJoin(qItem.mutableTags, qItemTag)
 
         searchSpec.name?.also { name ->
-            query.where(
-                qItem.name.like("%$name%")
-//                    .or(qSubItem.name.like("%$name%"))
-            )
+            query.where(qItem.name.like("%$name%").or(qItemLink.name.like("%$name%")))
         }
         searchSpec.url?.also { url ->
-            query.where(qItem.url.like("%$url%"))
+            query.where(qItemLink.url.like("%$url%"))
+        }
+        searchSpec.tagIds?.also { tagIds ->
+            query.where(qItemTag.tag.id.`in`(tagIds))
         }
 
         val total = query.select(qItem.countDistinct()).fetchOne()!!
@@ -46,34 +51,8 @@ abstract class ItemRepo(
         val results = JPAQuery<Item>(entityManater)
             .from(qItem)
             .select(qItem)
-            .leftJoin(qItem.mutableChildren, qSubItem).fetchJoin()
+            .leftJoin(qItem.mutableLinks, qItemLink).fetchJoin()
             .where(qItem.id.`in`(selectedIds))
-            .fetch()
-
-        return Page.of(results, pageable, total)
-    }
-
-
-    fun search(searchSpec: ItemSearchSpec, pageable: Pageable): Page<Item> {
-        val query = JPAQuery<Item>(entityManater)
-            .from(qItem)
-            .leftJoin(qItem.mutableChildren, qSubItem)
-
-        searchSpec.name?.also { name ->
-            query.where(
-                qItem.name.like("%$name%")
-                    .or(qSubItem.name.like("%$name%"))
-            )
-        }
-        searchSpec.url?.also { url ->
-            query.where(qItem.url.like("%$url%"))
-        }
-
-        val total = query.select(qItem.countDistinct()).fetchOne()!!
-        val results = query.select(qItem)
-            .fetchJoin()
-            .offset(pageable.offset)
-            .limit(pageable.size.toLong())
             .fetch()
 
         return Page.of(results, pageable, total)

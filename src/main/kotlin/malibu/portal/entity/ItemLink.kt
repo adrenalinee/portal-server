@@ -2,12 +2,12 @@ package malibu.portal.entity
 
 import io.micronaut.serde.annotation.Serdeable
 import jakarta.persistence.*
-import malibu.portal.operate.dto.subitem.SubItemCreateSpec
-import malibu.portal.operate.dto.subitem.SubItemDto
+import malibu.portal.operate.dto.subitem.ItemLinkCreateSpec
+import malibu.portal.operate.dto.subitem.ItemLinkDto
 
 @Entity
 @Serdeable
-open class SubItem(
+open class ItemLink(
     name: String,
 
     url: String,
@@ -31,8 +31,8 @@ open class SubItem(
         protected set
 
     companion object {
-        fun create(parent: Item, createSpec: SubItemCreateSpec): SubItem {
-            return SubItem(
+        fun create(parent: Item, createSpec: ItemLinkCreateSpec): ItemLink {
+            return ItemLink(
                 name = createSpec.name,
                 url = createSpec.url,
                 description = createSpec.description,
@@ -41,8 +41,8 @@ open class SubItem(
         }
     }
 
-    fun toDto(): SubItemDto {
-        return SubItemDto(
+    fun toDto(): ItemLinkDto {
+        return ItemLinkDto(
             name = name,
             url = url,
             description = description,

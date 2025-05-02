@@ -2,9 +2,8 @@ package malibu.portal.entity
 
 import io.micronaut.serde.annotation.Serdeable
 import jakarta.persistence.Entity
-import jakarta.persistence.Id
+import malibu.portal.operate.dto.tag.TagCreateSpec
 import malibu.portal.operate.dto.tag.TagDto
-import malibu.portal.entity.BaseEntity
 
 @Entity
 @Serdeable
@@ -23,7 +22,15 @@ open class Tag(
     var description: String? = description
         protected set
 
-
+    companion object {
+        fun create(organizationId: String, createSpec: TagCreateSpec): Tag {
+            return Tag(
+                organizationId = organizationId,
+                name = createSpec.name,
+                description = createSpec.description,
+            )
+        }
+    }
 
     fun toDto(): TagDto {
         return TagDto(
