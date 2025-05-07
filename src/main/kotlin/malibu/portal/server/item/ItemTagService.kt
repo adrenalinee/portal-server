@@ -4,7 +4,7 @@ import io.micronaut.data.model.Page
 import io.micronaut.data.model.Pageable
 import io.micronaut.transaction.annotation.Transactional
 import jakarta.inject.Singleton
-import malibu.portal.entity.ItemTag
+import malibu.portal.server.entity.ItemTag
 import malibu.portal.operate.dto.item.ItemTagCreateSpec
 import malibu.portal.operate.dto.item.ItemTagDto
 import malibu.portal.operate.dto.item.ItemTagSearchSpec

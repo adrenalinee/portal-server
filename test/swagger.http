@@ -1,0 +1,6 @@
+GET http://localhost:8080/swagger/portal-api-v1.yml
+
+###
+OPTIONS http://localhost:8080/swagger/portal-api-v1.yml
+Origin: http://localhost
+Access-Control-Request-Method: GET

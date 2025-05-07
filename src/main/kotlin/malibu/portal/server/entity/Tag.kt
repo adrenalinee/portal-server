@@ -1,9 +1,10 @@
-package malibu.portal.entity
+package malibu.portal.server.entity
 
 import io.micronaut.serde.annotation.Serdeable
 import jakarta.persistence.Entity
 import malibu.portal.operate.dto.tag.TagCreateSpec
 import malibu.portal.operate.dto.tag.TagDto
+import malibu.portal.operate.dto.tag.TagUpdateSpec
 
 @Entity
 @Serdeable
@@ -30,6 +31,11 @@ open class Tag(
                 description = createSpec.description,
             )
         }
+    }
+
+    fun update(updateSpec: TagUpdateSpec) {
+        updateSpec.name?.also { name = it }
+        updateSpec.description?.also { description = it }
     }
 
     fun toDto(): TagDto {

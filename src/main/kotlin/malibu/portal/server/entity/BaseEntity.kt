@@ -1,7 +1,5 @@
-package malibu.portal.entity
+package malibu.portal.server.entity
 
-import io.micronaut.data.annotation.DateCreated
-import io.micronaut.data.annotation.DateUpdated
 import jakarta.persistence.MappedSuperclass
 import jakarta.persistence.Version
 import org.hibernate.annotations.CreationTimestamp

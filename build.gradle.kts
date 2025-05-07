@@ -44,10 +44,9 @@ dependencies {
     implementation("io.micronaut.validation:micronaut-validation")
     implementation("io.micronaut.data:micronaut-data-hibernate-jpa")
     implementation("io.micronaut.kotlin:micronaut-kotlin-runtime")
-    implementation("io.micronaut.security:micronaut-security-jwt")
+//    implementation("io.micronaut.security:micronaut-security-jwt")
     implementation("io.micronaut.serde:micronaut-serde-jackson")
     implementation("io.micronaut.sql:micronaut-jdbc-hikari")
-    implementation("io.micronaut.openapi:micronaut-openapi-annotations")
 
     implementation("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:${kotlinVersion}")
@@ -55,11 +54,15 @@ dependencies {
     implementation("org.yaml:snakeyaml")
     implementation("com.github.f4b6a3:ulid-creator:5.2.3")
     implementation("com.querydsl:querydsl-jpa:5.1.0:jakarta")
+    implementation("io.projectreactor:reactor-core")
     implementation("com.linecorp.kotlin-jdsl:jpql-dsl:${jdslVersion}")
     implementation("com.linecorp.kotlin-jdsl:jpql-render:${jdslVersion}")
     implementation("com.linecorp.kotlin-jdsl:hibernate-support:${jdslVersion}")
 
+//    implementation("io.micronaut.openapi:micronaut-openapi")
 
+
+    compileOnly("io.micronaut.openapi:micronaut-openapi-annotations")
     compileOnly("io.micronaut:micronaut-http-client")
     runtimeOnly("ch.qos.logback:logback-classic")
     runtimeOnly("com.fasterxml.jackson.module:jackson-module-kotlin")
@@ -77,7 +80,6 @@ application {
 java {
     sourceCompatibility = JavaVersion.toVersion("21")
 }
-
 
 graalvmNative.toolchainDetection = false
 
@@ -108,24 +110,3 @@ micronaut {
 tasks.named<io.micronaut.gradle.docker.NativeImageDockerfile>("dockerfileNative") {
     jdkVersion = "21"
 }
-
-//val generated = file("src/main/generated")
-//
-//// querydsl QClass 파일 생성 위치를 지정
-//tasks.withType<JavaCompile> {
-//    options.generatedSourceOutputDirectory.set(generated)
-//}
-//
-//// kotlin source set 에 querydsl QClass 위치 추가
-//sourceSets {
-//    main {
-//        kotlin.srcDirs += generated
-//    }
-//}
-//
-//// gradle clean 시에 QClass 디렉토리 삭제
-//tasks.named("clean") {
-//    doLast {
-//        generated.deleteRecursively()
-//    }
-//}

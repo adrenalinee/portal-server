@@ -4,18 +4,19 @@ import io.micronaut.data.model.Page
 import io.micronaut.data.model.Pageable
 import io.micronaut.transaction.annotation.Transactional
 import jakarta.inject.Singleton
-import malibu.portal.entity.Tag
-import malibu.portal.operate.ServiceOperation
+import malibu.portal.operate.DomainOperation
 import malibu.portal.operate.dto.tag.TagCreateSpec
 import malibu.portal.operate.dto.tag.TagDto
 import malibu.portal.operate.dto.tag.TagSearchSpec
 import malibu.portal.operate.dto.tag.TagUpdateSpec
+import malibu.portal.server.entity.Tag
+import malibu.portal.server.exception.TagNotFoundException
 import java.util.*
 
 @Singleton
 class TagService(
     private val tagRepo: TagRepo
-): ServiceOperation<UUID, TagDto, TagDto, TagSearchSpec, TagCreateSpec, TagUpdateSpec> {
+): DomainOperation<UUID, TagDto, TagDto, TagSearchSpec, TagCreateSpec, TagUpdateSpec> {
 
     @Transactional
     override fun create(createSpec: TagCreateSpec): TagDto {
@@ -37,7 +38,9 @@ class TagService(
 
     @Transactional(readOnly = true)
     override fun getOne(id: UUID): TagDto? {
-        TODO("Not yet implemented")
+        return tagRepo.findById(id)
+            .map { it.toDto() }
+            .orElse(null)
     }
 
     @Transactional
@@ -45,13 +48,19 @@ class TagService(
         id: UUID,
         updateSpec: TagUpdateSpec
     ): TagDto {
-        TODO("Not yet implemented")
+        val tag = tagRepo.findById(id)
+            .orElseThrow { TagNotFoundException(id) }
+
+        tag.update(updateSpec)
+
+        return tagRepo.saveAndFlush(tag).toDto()
     }
 
     @Transactional
     override fun delete(id: UUID) {
-        TODO("Not yet implemented")
+        val tag = tagRepo.findById(id)
+            .orElseThrow { TagNotFoundException(id) }
+
+        tagRepo.delete(tag)
     }
-
-
 }

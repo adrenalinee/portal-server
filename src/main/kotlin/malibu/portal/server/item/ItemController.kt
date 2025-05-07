@@ -2,21 +2,11 @@ package malibu.portal.server.item
 
 import io.micronaut.data.model.Page
 import io.micronaut.data.model.Pageable
-import io.micronaut.http.annotation.Body
-import io.micronaut.http.annotation.Controller
-import io.micronaut.http.annotation.Delete
-import io.micronaut.http.annotation.Get
-import io.micronaut.http.annotation.Patch
-import io.micronaut.http.annotation.Post
-import io.micronaut.security.authentication.Authentication
+import io.micronaut.http.annotation.*
 import io.micronaut.validation.Validated
 import jakarta.validation.Valid
-import malibu.portal.operate.dto.item.ItemCreateSpec
-import malibu.portal.operate.dto.item.ItemDto
-import malibu.portal.operate.dto.item.ItemDtoSimple
-import malibu.portal.operate.dto.item.ItemSearchSpec
-import malibu.portal.operate.dto.item.ItemUpdateSpec
-import java.util.UUID
+import malibu.portal.operate.dto.item.*
+import java.util.*
 
 @Validated
 @Controller("/items")
@@ -25,13 +15,13 @@ class ItemController(
 ) {
     @Post
     fun create(
-        authentication: Authentication,
+//        authentication: Authentication,
         @Valid @Body createSpec: ItemCreateSpec
     ): ItemDto {
-        println(authentication.name)
-        authentication.attributes.forEach { println(it) }
-        println("---")
-        authentication.roles.forEach { println(it) }
+//        println(authentication.name)
+//        authentication.attributes.forEach { println(it) }
+//        println("---")
+//        authentication.roles.forEach { println(it) }
         return itemService.create(createSpec)
     }
 

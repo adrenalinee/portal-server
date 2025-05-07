@@ -6,8 +6,8 @@ import io.micronaut.data.jpa.repository.JpaRepository
 import io.micronaut.data.model.Page
 import io.micronaut.data.model.Pageable
 import jakarta.persistence.EntityManager
-import malibu.portal.entity.QTag
-import malibu.portal.entity.Tag
+import malibu.portal.server.entity.QTag
+import malibu.portal.server.entity.Tag
 import java.util.*
 
 @Repository

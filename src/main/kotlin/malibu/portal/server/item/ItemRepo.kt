@@ -7,11 +7,11 @@ import io.micronaut.data.jpa.repository.JpaRepository
 import io.micronaut.data.model.Page
 import io.micronaut.data.model.Pageable
 import jakarta.persistence.EntityManager
-import malibu.portal.entity.Item
-import malibu.portal.entity.QItem
-import malibu.portal.entity.QItemLink
-import malibu.portal.entity.QItemTag
 import malibu.portal.operate.dto.item.ItemSearchSpec
+import malibu.portal.server.entity.Item
+import malibu.portal.server.entity.QItem
+import malibu.portal.server.entity.QItemLink
+import malibu.portal.server.entity.QItemTag
 import java.util.*
 
 @Repository

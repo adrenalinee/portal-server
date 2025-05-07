@@ -1,19 +1,24 @@
 micronaut:
-  security:
-    intercept-url-map:
-      - pattern: /items/**
-        http-method: GET
-        access:
-          - isAuthenticated()
-      - pattern: /items/**
-        http-method: POST
-        access:
-          - isAuthenticated()
-      - pattern: /items/**
-        http-method: PATCH
-        access:
-          - ROLE_ADMIN
-      - pattern: /items/**
-        http-method: DELETE
-        access:
-          - ROLE_ADMIN
+#  security:
+#    enabled: false
+#    intercept-url-map:
+#      - pattern: /**
+#        http-method: OPTIONS
+#        access:
+#          - isAnonymous()
+#      - pattern: /items/**
+#        http-method: GET
+#        access:
+#          - isAuthenticated()
+#      - pattern: /items/**
+#        http-method: POST
+#        access:
+#          - isAuthenticated()
+#      - pattern: /items/**
+#        http-method: PATCH
+#        access:
+#          - ROLE_ADMIN
+#      - pattern: /items/**
+#        http-method: DELETE
+#        access:
+#          - ROLE_ADMIN

@@ -4,8 +4,8 @@ import io.micronaut.data.model.Page
 import io.micronaut.data.model.Pageable
 import io.micronaut.transaction.annotation.Transactional
 import jakarta.inject.Singleton
-import malibu.portal.entity.Item
-import malibu.portal.operate.ServiceOperation
+import malibu.portal.server.entity.Item
+import malibu.portal.operate.DomainOperation
 import malibu.portal.operate.dto.item.*
 import malibu.portal.server.exception.ItemNotFoundException
 import malibu.portal.server.tag.TagRepo
@@ -15,7 +15,7 @@ import java.util.*
 class ItemService(
     private val itemRepo: ItemRepo,
     private val tagRepo: TagRepo,
-): ServiceOperation<UUID, ItemDto, ItemDtoSimple, ItemSearchSpec, ItemCreateSpec, ItemUpdateSpec> {
+): DomainOperation<UUID, ItemDto, ItemDtoSimple, ItemSearchSpec, ItemCreateSpec, ItemUpdateSpec> {
     companion object {
         const val MAX_TAG_SIZE = 50
     }

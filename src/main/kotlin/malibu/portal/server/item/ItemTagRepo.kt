@@ -6,12 +6,11 @@ import io.micronaut.data.jpa.repository.JpaRepository
 import io.micronaut.data.model.Page
 import io.micronaut.data.model.Pageable
 import jakarta.persistence.EntityManager
-import malibu.portal.entity.Item
-import malibu.portal.entity.ItemTag
-import malibu.portal.entity.QItemTag
-import malibu.portal.entity.QTag
 import malibu.portal.operate.dto.item.ItemTagSearchSpec
-import java.util.UUID
+import malibu.portal.server.entity.Item
+import malibu.portal.server.entity.ItemTag
+import malibu.portal.server.entity.QItemTag
+import malibu.portal.server.entity.QTag
 
 @Repository
 abstract class ItemTagRepo(

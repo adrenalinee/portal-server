@@ -1,4 +1,4 @@
-package malibu.portal.entity
+package malibu.portal.server.entity
 
 import io.micronaut.serde.annotation.Serdeable
 import jakarta.persistence.*
