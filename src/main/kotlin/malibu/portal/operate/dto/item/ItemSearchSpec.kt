@@ -7,6 +7,7 @@ import java.util.UUID
 @Serdeable
 @Introspected
 data class ItemSearchSpec(
+    val keyword: String? = null,
     val itemId: String? = null,
     val name: String? = null,
     val url: String? = null,

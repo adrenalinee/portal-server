@@ -10,7 +10,7 @@ import jakarta.persistence.EntityManager
 import malibu.portal.operate.dto.item.ItemSearchSpec
 import malibu.portal.server.entity.Item
 import malibu.portal.server.entity.QItem
-import malibu.portal.server.entity.QItemLink
+import malibu.portal.server.entity.QItemExtraLink
 import malibu.portal.server.entity.QItemTag
 import java.util.*
 
@@ -20,7 +20,7 @@ abstract class ItemRepo(
 ): JpaRepository<Item, UUID>
 {
     private val qItem = QItem.item
-    private val qItemLink = QItemLink.itemLink
+    private val qItemExtraLink = QItemExtraLink.itemExtraLink
     private val qItemTag = QItemTag.itemTag
 
     /**
@@ -29,14 +29,27 @@ abstract class ItemRepo(
     fun search(searchSpec: ItemSearchSpec, pageable: Pageable): Page<Item> {
         val query = JPAQuery<Item>(entityManater)
             .from(qItem)
-            .leftJoin(qItem.mutableLinks, qItemLink)
+            .leftJoin(qItem.mutableLinks, qItemExtraLink)
             .leftJoin(qItem.mutableTags, qItemTag)
 
+        searchSpec.keyword?.also { keyword ->
+            query.where(
+                qItem.name.like("%$keyword%")
+                    .or(qItem.representLink.like("%$keyword%"))
+                    .or(qItemExtraLink.name.like("%$keyword%"))
+                    .or(qItemExtraLink.url.like("%$keyword%"))
+            )
+        }
+//        searchSpec.itemId?.also { itemId ->
+//            query.where(qItem.id.(itemId))
+//        }
         searchSpec.name?.also { name ->
-            query.where(qItem.name.like("%$name%").or(qItemLink.name.like("%$name%")))
+            query.where(qItem.name.like("%$name%")
+                .or(qItemExtraLink.name.like("%$name%"))
+            )
         }
         searchSpec.url?.also { url ->
-            query.where(qItemLink.url.like("%$url%"))
+            query.where(qItemExtraLink.url.like("%$url%"))
         }
         searchSpec.tagIds?.also { tagIds ->
             query.where(qItemTag.tag.id.`in`(tagIds))
@@ -51,7 +64,7 @@ abstract class ItemRepo(
         val results = JPAQuery<Item>(entityManater)
             .from(qItem)
             .select(qItem)
-            .leftJoin(qItem.mutableLinks, qItemLink).fetchJoin()
+//            .leftJoin(qItem.mutableLinks, qItemExtraLink).fetchJoin()
             .where(qItem.id.`in`(selectedIds))
             .fetch()
 

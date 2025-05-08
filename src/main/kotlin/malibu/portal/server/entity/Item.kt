@@ -12,6 +12,8 @@ import malibu.portal.operate.dto.item.ItemUpdateSpec
 class Item(
     organizationId: String,
     name: String,
+    representLink: String,
+    faviconLink: String? = null,
     description: String? = null,
 ): BaseEntity() {
 
@@ -22,15 +24,22 @@ class Item(
     var name: String = name
         protected set
 
+    @Column(nullable = false)
+    var representLink: String = representLink
+        protected set
+
     @OneToMany(mappedBy = "parent", cascade = [CascadeType.ALL])
-    protected val mutableLinks: MutableList<ItemLink> = mutableListOf()
-    val links: List<ItemLink>
+    protected val mutableLinks: MutableList<ItemExtraLink> = mutableListOf()
+    val extraLinks: List<ItemExtraLink>
         get() = mutableLinks.toList()
 
     @OneToMany(mappedBy = "item", cascade = [CascadeType.ALL])
-    protected val mutableTags: MutableSet<ItemTag> = mutableSetOf()
-    val tags: Set<ItemTag>
-        get() = mutableTags.toSet()
+    protected val mutableTags: MutableList<ItemTag> = mutableListOf()
+    val tags: List<ItemTag>
+        get() = mutableTags.toList()
+
+    var faviconLink: String? = faviconLink
+        protected set
 
     var description: String? = description
         protected set
@@ -39,12 +48,14 @@ class Item(
         fun create(organizationId: String, createSpec: ItemCreateSpec): Item {
             return Item(
                 organizationId = organizationId,
-                name = createSpec.name,
+                name = createSpec.name!!,
+                representLink = createSpec.representLink!!,
+                faviconLink = createSpec.faviconLink,
                 description = createSpec.description,
             ).also { item ->
                 item.mutableLinks.addAll(
-                    createSpec.links?.map { subItemCreateSpec ->
-                        ItemLink.create(item, subItemCreateSpec)
+                    createSpec.extraLinks?.map { subItemCreateSpec ->
+                        ItemExtraLink.create(item, subItemCreateSpec)
                     } ?: listOf()
                 )
             }
@@ -53,23 +64,27 @@ class Item(
 
     fun update(updateSpec: ItemUpdateSpec) {
         updateSpec.name?.also { name = it }
+        updateSpec.representLink?.also { representLink = it }
+        updateSpec.faviconLink?.also { faviconLink = it }
         updateSpec.description?.also { description = it }
         updateSpec.links?.also {
             mutableLinks.clear()
             mutableLinks.addAll(it.map { children ->
-                ItemLink.create(this, children)
+                ItemExtraLink.create(this, children)
             })
         }
     }
 
     fun toDto(): ItemDto {
         return ItemDto(
-            linkItemId = getId(),
+            itemId = getId(),
             organizationId = organizationId,
             name = name,
+            representLink = representLink,
+            faviconLink = faviconLink,
             description = description,
-            links = links.map { subItem -> subItem.toDto() },
-//            tags = tags.map { linkTag -> linkTag.toDto() },
+            extraLinks = extraLinks.map { subItem -> subItem.toDto() },
+            itemTags = tags.map { linkTag -> linkTag.toDto() },
             version = version,
             createdAt = createdAt,
             updatedAt = updatedAt,
@@ -78,11 +93,13 @@ class Item(
 
     fun toDtoSimple(): ItemDtoSimple {
         return ItemDtoSimple(
-            linkItemId = getId(),
+            itemId = getId(),
             organizationId = organizationId,
             name = name,
+            representLink = representLink,
+            faviconLink = faviconLink,
             description = description,
-            links = links.map { subItem -> subItem.toDto() },
+//            extraLinks = extraLinks.map { subItem -> subItem.toDto() },
             version = version,
             createdAt = createdAt,
             updatedAt = updatedAt,

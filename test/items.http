@@ -4,12 +4,9 @@ Content-Type: application/json
 {
   "name": "google",
   "description": "구글입니다.",
-  "links": [
-    {
-      "name": "google gemini",
-      "url": "https://google.com",
-      "description": "구글 홈페이지 입니다."
-    },
+  "representLink": "https://google.com",
+  "faviconLink": "https://google.com/images/branding/googleg/1x/googleg_standard_color_128dp.png",
+  "extraLinks": [
     {
       "name": "google gemini",
       "url": "https://gemini.google.com/",
@@ -24,7 +21,7 @@ Content-Type: application/json
 
 {
     "name": "naver",
-    "url": "https://naver.com",
+    "representLink": "https://naver.com",
     "description": "네이버입니다."
 }
 

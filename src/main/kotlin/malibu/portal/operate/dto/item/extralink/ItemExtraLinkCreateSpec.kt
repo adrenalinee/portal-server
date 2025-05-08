@@ -1,11 +1,11 @@
-package malibu.portal.operate.dto.subitem
+package malibu.portal.operate.dto.item.extralink
 
 import io.micronaut.core.annotation.Introspected
 import io.micronaut.serde.annotation.Serdeable
 
 @Serdeable
 @Introspected
-data class ItemLinkCreateSpec(
+data class ItemExtraLinkCreateSpec(
     val name: String,
     val url: String,
     val description: String? = null

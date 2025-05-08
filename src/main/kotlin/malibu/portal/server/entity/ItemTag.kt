@@ -23,7 +23,7 @@ class ItemTag(
         protected set
 
     @JoinColumn(name = "tag_id")
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false) //, fetch = FetchType.LAZY)
     var tag: Tag = tag
         protected set
 
@@ -42,7 +42,6 @@ class ItemTag(
 
     fun toDto(): ItemTagDto {
         return ItemTagDto(
-//            linkItemTagId = id,
             tag = tag.toDto(),
             createdAt = createdAt,
         )
