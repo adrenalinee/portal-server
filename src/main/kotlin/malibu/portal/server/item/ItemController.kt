@@ -2,6 +2,7 @@ package malibu.portal.server.item
 
 import io.micronaut.data.model.Page
 import io.micronaut.data.model.Pageable
+import io.micronaut.http.HttpStatus
 import io.micronaut.http.annotation.*
 import io.micronaut.validation.Validated
 import jakarta.validation.Valid
@@ -14,6 +15,7 @@ class ItemController(
     private val itemService: ItemService
 ) {
     @Post
+    @Status(HttpStatus.CREATED)
     fun create(
 //        authentication: Authentication,
         @Valid @Body createSpec: ItemCreateSpec
